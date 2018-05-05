@@ -6,6 +6,10 @@ DEBUG_MODE=
 TEST_MODE=
 TEST_POSTFIX=
 GDB_PORT=1234
+BINARY_FILE_NAME=/dev/shm/kafl_qemu_binary_0
+PAYLOAD_FILE_NAME=/dev/shm/kafl_qemu_payload_0
+COVERAGE_FILE_NAME=/dev/shm/kafl_qemu_coverage_0
+BITMAP_FILE_NAME=/dev/shm/kafl_bitmap_0
 
 while getopts "chgd:t:" opt; do
     case $opt in
@@ -38,6 +42,18 @@ while getopts "chgd:t:" opt; do
             TEST_POSTFIX=.$OPTARG
             GDB_PORT=$[ $OPTARG % 10000 + 40000 ]
             ;;
+        b)
+            BINARY_FILE_NAME=$OPTARG
+            ;;
+        p)
+            PAYLOAD_FILE_NAME=$OPTARG
+            ;;
+        v)
+            COVERAGE_FILE_NAME=$OPTARG
+            ;;
+        m)
+            BITMAP_FILE_NAME=$OPTARG
+            ;;
         ?)
             exit 1
             ;;
@@ -62,6 +78,7 @@ fi
 
 source $BUILD_DIR/config/auto.conf
 
+UCONFIG_ARCH=amd64
 case $UCONFIG_ARCH in
     arm)
         if [[ $UCONFIG_ARM_BOARD_GOLDFISH = y ]]; then
@@ -121,14 +138,13 @@ case $UCONFIG_ARCH in
             -drive file=$BUILD_DIR/sfs.img$TEST_POSTFIX,media=disk,cache=writeback,index=2 \
             -net nic,model=e1000 -net dump,file=/tmp/vm0.pcap \
             -net user,id=mynet0,net=192.168.76.0/24,hostfwd=tcp::10022-:22 \
+            -enable-kvm \
+            -device kafl,bitmap_size=0,shm0=$BINARY_FILE_NAME,shm1=$PAYLOAD_FILE_NAME,shm2=$COVERAGE_FILE_NAME,bitmap=$BITMAP_FILE_NAME \
             $EXTRA_OPT
         ;;
     amd64)
-        QEMU=qemu
-        which qemu-system-x86_64 > /dev/null 2>&1
-        if [ $? -eq 0 ]; then
-            QEMU=qemu-system-x86_64
-        fi
+        QEMU=../../kAFL/qemu-2.9.0/x86_64-softmmu/qemu-system-x86_64
+        
         EXTRA_OPT="-serial file:$BUILD_DIR/serial.log$TEST_POSTFIX"
         if [[ $TEST_MODE = y ]]; then
             EXTRA_OPT+=" -S -display none -gdb tcp::$GDB_PORT "
@@ -148,6 +164,8 @@ case $UCONFIG_ARCH in
             -drive file=$BUILD_DIR/sfs.img$TEST_POSTFIX,media=disk,cache=writeback,index=2 \
             -net nic,model=e1000 -net dump,file=/tmp/vm0.pcap \
             -net user,id=mynet0,net=192.168.76.0/24,hostfwd=tcp::10022-:22 \
+            -enable-kvm \
+            -device kafl,bitmap_size=0,shm0=$BINARY_FILE_NAME,shm1=$PAYLOAD_FILE_NAME,shm2=$COVERAGE_FILE_NAME,bitmap=$BITMAP_FILE_NAME \
             $EXTRA_OPT
         ;;
 esac
