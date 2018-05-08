@@ -35,6 +35,8 @@ struct proc_struct *alloc_proc(void)
 		proc->time_slice = 0;
 		proc->sem_queue = NULL;
 		event_box_init(&(proc->event_box));
+		// proc_signal_init(&proc->signal_info);
+		proc->signal_info.sighand = NULL;
 		proc->fs_struct = NULL;
 		proc->cpu_affinity = myid();
 		spinlock_init(&proc->lock);

@@ -235,6 +235,7 @@ uintptr_t addr;
 		break;
 	case T_SYSCALL:
 	case 0x6:
+		// kprintf("syscalled;\n");
 		syscall();
 		break;
 	case T_FAST_SYSCALL:

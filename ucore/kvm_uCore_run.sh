@@ -78,7 +78,6 @@ fi
 
 source $BUILD_DIR/config/auto.conf
 
-UCONFIG_ARCH=amd64
 case $UCONFIG_ARCH in
     arm)
         if [[ $UCONFIG_ARM_BOARD_GOLDFISH = y ]]; then
