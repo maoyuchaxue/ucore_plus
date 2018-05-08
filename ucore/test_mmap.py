@@ -1,6 +1,7 @@
 
 import mmap
 import os
+import time
 import sys
 import random
 import subprocess
@@ -28,9 +29,11 @@ prc = subprocess.Popen("bash kvm_uCore_run.sh", shell=True)
     
 hello_world = "hello world with QEMU-PT!\0"
 pay_mem.write(hello_world)
-    
-cov_out = cov_mem.read(100)
 
-print(cov_out)
+for i in range(100):
+    time.sleep(5)
+    cov_mem.seek(0)
+    cov_out = cov_mem.read(100)
+    print("cov: " + cov_out)
 
 prc.wait()
