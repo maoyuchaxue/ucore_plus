@@ -26,7 +26,7 @@ cov_mem = mmap.mmap(cov_f, 100, mmap.MAP_SHARED, mmap.PROT_WRITE | mmap.PROT_REA
 
 prc = subprocess.Popen("bash kvm_uCore_run.sh", shell=True)
     
-hello_world = "hello world with QEMU-PT!\n"
+hello_world = "hello world with QEMU-PT!\0"
 pay_mem.write(hello_world)
     
 cov_out = cov_mem.read(100)
