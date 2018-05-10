@@ -15,7 +15,7 @@ NR_MEMS_PER_NODE=16
 #
 # Memory Management
 #
-
+HEAP_SLOB=y
 #
 # Schedule
 #
