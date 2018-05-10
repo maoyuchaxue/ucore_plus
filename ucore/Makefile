@@ -44,9 +44,9 @@ export ARCH CROSS_COMPILE
 export KCONFIG_AUTOHEADER KCONFIG_AUTOCONFIG
 
 
-TARGET_CC := $(CROSS_COMPILE)gcc
+TARGET_CC := $(CROSS_COMPILE)/home/kzf/syzkaller/gcc/install/bin/gcc
 TARGET_LD := $(CROSS_COMPILE)ld
-TARGET_AR := $(CROSS_COMPILE)ar
+TARGET_AR := $(CROSS_COMPILE)/home/kzf/syzkaller/gcc/install/bin/gcc-ar
 TARGET_STRIP := $(CROSS_COMPILE)strip
 TARGET_OBJCOPY := $(CROSS_COMPILE)objcopy
 
@@ -207,7 +207,7 @@ amd64tags:
 run:
 	~/qemu/x86_64-softmmu/qemu-system-x86_64  -serial mon:stdio -nographic -m 512m -hda obj/kernel.img -drive file=obj/sfs.img,media=disk,cache=writeback,index=2 -s 
 runamd64: kernel sfsimg
-	qemu-system-x86_64  -serial mon:stdio -nographic -m 564m -hda obj/kernel.img -drive file=obj/sfs.img,media=disk,cache=writeback,index=2 -s 
+	qemu-system-x86_64  -serial mon:stdio -nographic -m 564M -hda obj/kernel.img -drive file=obj/sfs.img,media=disk,cache=writeback,index=2 -s 
 runamd64smp: kernel sfsimg
 	qemu-system-x86_64  -serial mon:stdio -nographic -m 1g -hda obj/kernel.img -smp 4 -numa node -numa node  -drive file=obj/sfs.img,media=disk,cache=writeback,index=2 -s 
 kvmamd64: kernel sfsimg

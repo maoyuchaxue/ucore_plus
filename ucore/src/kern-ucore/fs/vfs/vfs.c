@@ -25,7 +25,7 @@ void vfs_init(void)
 {
 	vfs_devlist_init();
 	file_system_type_list_init();
-  vfs_mount_init();
+    vfs_mount_init();
 }
 
 #define le2fstype(le, member)                         \
@@ -140,7 +140,12 @@ int vfs_do_mount_nocheck(const char *devname, const char* mountpoint,
   if(ret != 0) return ret;
   struct fs *filesystem;
   ret = fs_type->mount(fs_type, flags, devname, data, &filesystem);
-  if(ret != 0) return ret;
+  if(ret != 0) 
+  {
+	  kprintf("%d\n", ret) ;
+	  //kprintf(devname) ;
+	  return ret;
+  }
   ret = vfs_mount_add_record(mountpoint_full_path, filesystem);
   kfree(mountpoint_full_path);
   return ret;

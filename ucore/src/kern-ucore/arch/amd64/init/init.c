@@ -151,7 +151,6 @@ int kern_init(uint64_t mbmagic, uint64_t mbmem)
 	swap_init();		// init swap
 #endif
 	fs_init();		// init fs
-
 	clock_init();		// init clock interrupt
 	mod_init();
 

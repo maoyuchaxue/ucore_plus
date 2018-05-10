@@ -1,8 +1,46 @@
+include Kbuild.include
 ifneq ($(MAKECMDGOALS),clean)
 include $(KCONFIG_AUTOCONFIG)
 endif
 
 PHONY+=all subdir clean
+
+# SPDX-License-Identifier: GPL-2.0
+call_threshold := 10000
+
+KASAN_SHADOW_OFFSET ?= 0xdffffc0000000000
+
+CFLAGS_KASAN_MINIMAL := -fsanitize=kernel-address
+
+cc-param = $(call cc-option, -mllvm -$(1), $(call cc-option, --param $(1)))
+
+$(warning $(call cc-option, $(CFLAGS_KASAN_MINIMAL) -Werror))
+ifeq ($(call cc-option, $(CFLAGS_KASAN_MINIMAL) -Werror),)
+        $(warning Cannot use CONFIG_KASAN: \
+            -fsanitize=kernel-address is not supported by compiler)
+else
+   # -fasan-shadow-offset fails without -fsanitize
+   CFLAGS_KASAN_SHADOW := $(call cc-option, -fsanitize=kernel-address \
+			-fasan-shadow-offset=$(KASAN_SHADOW_OFFSET), \
+			$(call cc-option, -fsanitize=kernel-address \
+			-mllvm -asan-mapping-offset=$(KASAN_SHADOW_OFFSET)))
+
+   ifeq ($(strip $(CFLAGS_KASAN_SHADOW)),)
+      CFLAGS_KASAN := $(CFLAGS_KASAN_MINIMAL)
+   else
+      # Now add all the compiler specific options that are valid standalone
+      CFLAGS_KASAN := $(CFLAGS_KASAN_SHADOW) \
+	$(call cc-param,asan-globals=1) \
+	$(call cc-param,asan-instrumentation-with-call-threshold=$(call_threshold)) \
+	$(call cc-param,asan-stack=1) \
+	$(call cc-param,asan-use-after-scope=1) \
+	$(call cc-param,asan-instrument-allocas=1)
+   endif
+
+endif
+
+CFLAGS_KASAN_NOSANITIZE := -fno-builtin
+
 
 #TARGET_CFLAGS := -g -ggdb
 TARGET_CFLAGS += -fno-builtin -nostdlib  -nostdinc --std=gnu99 -Wall -fno-stack-protector
@@ -11,6 +49,10 @@ TARGET_CFLAGS += $(shell echo $(UCONFIG_ADDITIONAL_CFLAGS))
 ifdef UCONFIG_PROFILER_ON
 TARGET_CFLAGS += -pg
 endif
+#TARGET_CFLAGS += $(CFLAGS_KASAN)
+TARGET_CFLAGS += -fsanitize-coverage=trace-pc
+
+$(warning $(TARGET_CFLAGS))
 
 TARGET_LDFLAGS += $(shell echo $(UCONFIG_ADDITIONAL_LDFLAGS))
 
