@@ -49,8 +49,6 @@ TARGET_CFLAGS += $(shell echo $(UCONFIG_ADDITIONAL_CFLAGS))
 ifdef UCONFIG_PROFILER_ON
 TARGET_CFLAGS += -pg
 endif
-#TARGET_CFLAGS += $(CFLAGS_KASAN)
-TARGET_CFLAGS += -fsanitize-coverage=trace-pc
 
 $(warning $(TARGET_CFLAGS))
 
@@ -80,8 +78,13 @@ include $(KTREE)/arch/$(ARCH)/include.mk
 endif
 TARGET_CFLAGS += $(addprefix -I$(KTREE)/arch/$(ARCH)/, $(ARCH_INLUCDES))
 TARGET_CFLAGS += $(ARCH_CFLAGS)
+#TARGET_CFLAGS += $(CFLAGS_KASAN)
+TARGET_SIMPLE_CFLAGS := $(TARGET_CFLAGS)
+TARGET_CFLAGS += -fsanitize-coverage=trace-pc
+
 TARGET_LDFLAGS += $(ARCH_LDFLAGS)
 
+export TARGET_SIMPLE_CFLAGS
 export TARGET_CFLAGS
 export TARGET_LDFLAGS
 

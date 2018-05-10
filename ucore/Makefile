@@ -44,9 +44,9 @@ export ARCH CROSS_COMPILE
 export KCONFIG_AUTOHEADER KCONFIG_AUTOCONFIG
 
 
-TARGET_CC := $(CROSS_COMPILE)/home/kzf/syzkaller/gcc/install/bin/gcc
+TARGET_CC := $(CROSS_COMPILE)$(GCC)/install/bin/gcc
 TARGET_LD := $(CROSS_COMPILE)ld
-TARGET_AR := $(CROSS_COMPILE)/home/kzf/syzkaller/gcc/install/bin/gcc-ar
+TARGET_AR := $(CROSS_COMPILE)$(GCC)/install/bin/gcc-ar
 TARGET_STRIP := $(CROSS_COMPILE)strip
 TARGET_OBJCOPY := $(CROSS_COMPILE)objcopy
 
