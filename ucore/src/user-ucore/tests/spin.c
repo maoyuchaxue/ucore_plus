@@ -20,7 +20,7 @@ int main(void)
 	assert((ret = kill(pid)) == 0);
 	cprintf("kill returns %d\n", ret);
 
-	assert((ret = waitpid(pid, NULL, 0)) == 0);
+	assert((ret = waitpid(pid, NULL)) == 0);
 	cprintf("wait returns %d\n", ret);
 
 	cprintf("spin may pass.\n");

@@ -93,7 +93,7 @@ int main(void)
 	}
 
 	close(__fd[0]), close(__fd[1]);
-	assert(waitpid(pid, &exit_code, 0) == 0 && exit_code == 0);
+	assert(waitpid(pid, &exit_code) == 0 && exit_code == 0);
 	cprintf("pipetest2 pass.\n");
 	return 0;
 

@@ -182,7 +182,7 @@ again:
 				if (ret < 0) {
 					return ret;
 				}
-				waitpid(ret, NULL, 0);
+				waitpid(ret, NULL);
 				goto again;
 			}
 			break;
@@ -246,7 +246,7 @@ int main(int argc, char **argv)
 			exit(ret);
 		}
 		assert(pid >= 0);
-		if (waitpid(pid, &ret, 0) >= 0) {
+		if (waitpid(pid, &ret) == 0) {
 			if (ret == 0 && shcwd[0] != '\0') {
 				ret = chdir(shcwd);
 			}

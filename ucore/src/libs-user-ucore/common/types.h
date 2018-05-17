@@ -9,8 +9,6 @@
 
 /* Represents true-or-false values */
 typedef int bool;
-#define false 0
-#define true 1 
 
 /* Explicitly-sized versions of integer types */
 typedef char int8_t;
@@ -59,8 +57,6 @@ typedef size_t ppn_t;
 
 /* sem_t is used for semaphore id */
 typedef uintptr_t sem_t;
-
-typedef uint64_t sigset_t;
 
 /* *
  * Rounding operations (efficient when n is a power of 2)

@@ -19,7 +19,7 @@ int main(void)
 		exit(0);
 	}
 	assert(pid > 0);
-	assert(sem_free(mutex) == 0 && waitpid(pid, &value, 0) == 0 && value == 0);
+	assert(sem_free(mutex) == 0 && waitpid(pid, &value) == 0 && value == 0);
 	cprintf("semtest4 pass.\n");
 	return 0;
 }

@@ -5,5 +5,4 @@ int tkill(int pid, int sign);
 int kill_bionic(int pid, int sign);
 int sigprocmask(int how, const sigset_t * set, sigset_t * old);
 int sigsuspend(uint32_t mask);
-int sigaction(int sign, const struct sigaction *act, struct sigaction *old);
 int set_shellrun_pid();

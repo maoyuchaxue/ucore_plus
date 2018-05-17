@@ -30,7 +30,7 @@ void exit(int error_code) __attribute__ ((noreturn));
 int fork(void);
 int forks(void);
 int wait(void);
-int waitpid(int pid, int *store, int options);
+int waitpid(int pid, int *store);
 void yield(void);
 int sleep(unsigned int time);
 int kill(int pid);

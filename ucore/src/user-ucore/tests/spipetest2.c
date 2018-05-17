@@ -95,7 +95,7 @@ int main(void)
 	}
 
 	assert(spipeclose(&pipe) == 0);
-	assert(waitpid(pid, &exit_code, 0) == 0 && exit_code == 0);
+	assert(waitpid(pid, &exit_code) == 0 && exit_code == 0);
 	cprintf("spipetest2 pass.\n");
 	return 0;
 

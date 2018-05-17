@@ -1363,7 +1363,7 @@ found:
 	return ret;
 }
 
-int do_linux_waitpid(int pid, int *code_store, int options)
+int do_linux_waitpid(int pid, int *code_store)
 {
 	struct mm_struct *mm = current->mm;
 	if (code_store != NULL) {
@@ -1409,16 +1409,11 @@ repeat:
 		return -E_INVAL;
 	}
 	if (haskid) {
-		if(options & 1) // WNOHANG
-			return 0 ;
-		else
-		{ 
-			current->state = PROC_SLEEPING;
-			current->wait_state = WT_CHILD;
-			schedule();
-			may_killed();
-			goto repeat;
-		}
+		current->state = PROC_SLEEPING;
+		current->wait_state = WT_CHILD;
+		schedule();
+		may_killed();
+		goto repeat;
 	}
 	return -E_BAD_PROC;
 

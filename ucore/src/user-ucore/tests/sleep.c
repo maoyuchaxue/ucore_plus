@@ -51,7 +51,7 @@ int main(void)
 		panic("fork failed.\n");
 	}
 
-	assert(waitpid(pid2, &exit_code, 0) == 0 && exit_code == 0);
+	assert(waitpid(pid2, &exit_code) == 0 && exit_code == 0);
 	cprintf("use %04d msecs.\n", gettime_msec() - time);
 	cprintf("sleep pass.\n");
 	return 0;

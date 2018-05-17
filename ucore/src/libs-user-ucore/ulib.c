@@ -39,9 +39,9 @@ int wait(void)
 	return sys_wait(0, NULL);
 }
 
-int waitpid(int pid, int *store, int options)
+int waitpid(int pid, int *store)
 {
-	return sys_linux_waitpid(pid, store, options);
+	return sys_wait(pid, store);
 }
 
 void yield(void)

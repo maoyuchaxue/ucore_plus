@@ -165,7 +165,7 @@ int main(void)
 		mbox_free(mbox_data);
 		int exit_code, err = 0;
 		for (i = 0; i < f_pids_num; i++) {
-			waitpid(f_pids[i], &exit_code, 0);
+			waitpid(f_pids[i], &exit_code);
 		}
 		for (i = 0; i < mod; i++) {
 			if (wait_for_empty(mbox[i]) != 0) {

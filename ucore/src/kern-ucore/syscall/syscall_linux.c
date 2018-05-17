@@ -40,7 +40,7 @@ machine_word_t syscall_linux_wait4(machine_word_t args[])
 	void *rusage = (void *)args[3];
 	if (options && rusage)
 		return -E_INVAL;
-	return do_linux_waitpid(pid, store, 0);
+	return do_linux_waitpid(pid, store);
 }
 
 machine_word_t syscall_linux_getpid(machine_word_t args[])

@@ -18,7 +18,7 @@ int main(void)
 	sleep(100);
 	kill(pid);
 
-	assert(waitpid(pid, &ret, 0) == 0 && ret != 0);
+	assert(waitpid(pid, &ret) == 0 && ret != 0);
 	cprintf("fread_test2 pass.\n");
 	return 0;
 }

@@ -48,7 +48,7 @@ int main(void)
 	assert(pid > 0);
 	cprintf("fork ok.\n");
 
-	assert(waitpid(pid, &exit_code, 0) == 0 && exit_code == 0xbeaf);
+	assert(waitpid(pid, &exit_code) == 0 && exit_code == 0xbeaf);
 	cprintf("cowtest pass.\n");
 	return 0;
 }

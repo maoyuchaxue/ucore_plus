@@ -28,7 +28,7 @@ int main(void)
 		memset(buf2, 0xFF, 4096);
 		exit(0);
 	}
-	assert(pid > 0 && waitpid(pid, &exit_code, 0) == 0 && exit_code == 0);
+	assert(pid > 0 && waitpid(pid, &exit_code) == 0 && exit_code == 0);
 
 	for (i = 0; i < 4096; i++) {
 		assert(*(char *)(buf1 + 4096 + i) == (char)i);

@@ -48,7 +48,7 @@ int main(void)
 	}
 	if (pid2 > 0) {
 		cprintf("wait child 1.\n");
-		waitpid(pid1, NULL, 0);
+		waitpid(pid1, NULL);
 		panic("waitpid %d returns\n", pid1);
 	} else {
 		kill(pid1);

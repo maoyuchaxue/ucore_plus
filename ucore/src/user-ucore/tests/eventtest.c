@@ -53,7 +53,7 @@ void test3(void)
 		exit(0);
 	}
 	assert(pid > 0);
-	assert(waitpid(pid, NULL, 0) == 0);
+	assert(waitpid(pid, NULL) == 0);
 }
 
 int main(void)
