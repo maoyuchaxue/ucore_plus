@@ -67,7 +67,7 @@ int main(void)
 	if ((pid = fork()) == 0) {
 		mbox_test();
 	}
-	assert(pid > 0 && waitpid(pid, &ret) == 0 && ret == 0);
+	assert(pid > 0 && waitpid(pid, &ret, 0) == 0 && ret == 0);
 	cprintf("mboxtest pass.\n");
 	return 0;
 }

@@ -33,7 +33,7 @@ int thread_wait(thread_t * tidp, int *exit_code)
 {
 	int ret = -E_INVAL;
 	if (tidp != NULL) {
-		if ((ret = waitpid(tidp->pid, exit_code)) == 0) {
+		if ((ret = waitpid(tidp->pid, exit_code, 0)) == 0) {
 			munmap((uintptr_t) (tidp->stack), THREAD_STACKSIZE);
 		}
 	}

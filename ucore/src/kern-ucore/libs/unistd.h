@@ -75,11 +75,18 @@
 /* zhangyk May 30 2016 */
 #define SYS_debug           155
 
+/* kzf: 2018/05 */
+#define SYS_linux_getrlimit  156
+#define SYS_linux_setrlimit  157
+#define SYS_linux_lstat     158
+#define SYS_linux_waitpid   159
+
 /* liucong 20121109 */
 #define SYS_rf212           199
 
 /* chy: halt system*/
 #define SYS_halt            201
+
 
 /* SYS_fork flags */
 #define CLONE_VM             0x00000100

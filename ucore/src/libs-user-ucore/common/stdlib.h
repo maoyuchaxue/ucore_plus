@@ -6,6 +6,8 @@
 /* the largest number rand will return */
 #define RAND_MAX    2147483647UL
 
+#define WEXITSTATUS(status) (((status)>>8)&(0xFF)) // 根据syscall手写一个
+
 /* libs/rand.c */
 int rand(void);
 void srand(unsigned int seed);

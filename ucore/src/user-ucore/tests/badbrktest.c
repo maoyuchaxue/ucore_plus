@@ -28,7 +28,7 @@ int main(void)
 		exit(0xdead);
 	}
 	assert(pid > 0);
-	assert(waitpid(pid, &exit_code) == 0 && exit_code != 0xdead);
+	assert(waitpid(pid, &exit_code, 0) == 0 && exit_code != 0xdead);
 	cprintf("child is killed by kernel, en.\n");
 
 	assert(wait() != 0);

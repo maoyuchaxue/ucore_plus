@@ -6,9 +6,16 @@
 #define __user
 #endif
 
+#ifndef	errno
+extern int errno;
+#endif
+
+extern uintptr_t syscall(int num, ...);
+
 int sys_exit(int error_code);
 int sys_fork(void);
 int sys_wait(int pid, int *store);
+int sys_linux_waitpid(int pid, int *store, int options);
 int sys_exec(const char *filename, const char **argv, const char **envp);
 int sys_yield(void);
 int sys_sleep(unsigned int time);
@@ -73,7 +80,19 @@ int sys_umount(const char *target);
 
 int sys_ioctl(int d, int request, unsigned long data);
 
-void *sys_linux_mmap(void *addr, size_t length, int fd, size_t offset);
+struct sigaction ;
+struct linux_rlimit ;
+struct linux_stat ;
+
+void *sys_linux_mmap(void *addr, size_t len, int prot, int flags, int fd, size_t pgoff) ;
+int sys_linux_tkill(int pid, int sign) ;
+int sys_linux_kill(int pid, int sign) ;
+int sys_linux_sigprocmask(int how, const sigset_t * set, sigset_t * old) ;
+int sys_linux_sigsuspend(uint32_t mask) ;
+int sys_linux_sigaction(int sig, const struct sigaction *act, struct sigaction *oact) ;
+int sys_linux_getrlimit(int res, const struct linux_rlimit * limit) ;
+int sys_linux_setrlimit(int res, const struct linux_rlimit * limit) ;
+int sysfile_linux_lstat(const char *path, struct linux_stat *linux_stat_store) ;
 
 int sys_rf212_send(uint8_t len, uint8_t * data);
 int sys_rf212_reg(uint8_t reg, uint8_t value);

@@ -9,7 +9,7 @@
 
 #ifndef ARCH_ARM
 
-extern uintptr_t syscall(int num, ...);
+int errno = 0 ;
 
 int sys_exit(int error_code)
 {
@@ -24,6 +24,10 @@ int sys_fork(void)
 int sys_wait(int pid, int *store)
 {
 	return syscall(SYS_wait, pid, store);
+}
+int sys_linux_waitpid(int pid, int *store, int options)
+{
+	return syscall(SYS_linux_waitpid, pid, store, options);
 }
 
 int sys_exec(const char *filename, const char **argv, const char **envp)
@@ -281,6 +285,53 @@ int sys_rf212_reset()
 
 int sys_debug(uint32_t pid, uint32_t sig, uint32_t arg) {
     return syscall(SYS_debug, pid, sig, arg);
+}
+
+// syscalls for signal
+
+void* sys_linux_mmap(void *addr, size_t len, int prot, int flags, int fd, size_t pgoff) 
+{
+	return syscall(SYS_linux_mmap, addr, len, prot, flags, fd, pgoff);
+}
+
+int sys_linux_tkill(int pid, int sign)
+{
+	return syscall(SYS_linux_tkill, pid, sign);
+}
+
+int sys_linux_kill(int pid, int sign)
+{
+	return syscall(SYS_linux_kill, pid, sign);
+}
+
+int sys_linux_sigprocmask(int how, const sigset_t * set, sigset_t * old)
+{
+	return syscall(SYS_linux_sigprocmask, how, set, old);
+}
+
+int sys_linux_sigsuspend(uint32_t mask)
+{
+	return syscall(SYS_linux_sigsuspend, mask);
+}
+
+int sys_linux_sigaction(int sig, const struct sigaction *act, struct sigaction *oact)
+{
+	return syscall(SYS_linux_sigaction, sig, act, oact);
+}
+
+int sys_linux_getrlimit(int res, const struct linux_rlimit * limit)
+{
+	return syscall(SYS_linux_getrlimit, res, limit);
+}
+
+int sys_linux_setrlimit(int res, const struct linux_rlimit * limit)
+{
+	return syscall(SYS_linux_setrlimit, res, limit);
+}
+
+int sysfile_linux_lstat(const char *path, struct linux_stat *linux_stat_store)
+{
+	return syscall(SYS_linux_lstat, path, linux_stat_store) ;
 }
 
 //halt the system, now only used in AMD64

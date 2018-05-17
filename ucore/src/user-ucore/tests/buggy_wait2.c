@@ -16,7 +16,7 @@ int main(void)
 		exit(0);
 	}
 
-	assert(waitpid(pid, exit_codep) == 0 && *exit_codep == 0);
+	assert(waitpid(pid, exit_codep, 0) == 0 && *exit_codep == 0);
 	cprintf("buggy_wait2 pass.\n");
 	return 0;
 }
