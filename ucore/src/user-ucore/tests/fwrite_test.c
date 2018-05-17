@@ -45,7 +45,7 @@ int main(void)
 		exit(0);
 	}
 	assert(pid > 0);
-	assert(waitpid(pid, &ret) == 0 && ret == 0);
+	assert(waitpid(pid, &ret, 0) == 0 && ret == 0);
 	cprintf("fwrite_test pass.\n");
 	return 0;
 }

@@ -78,7 +78,7 @@ int main(void)
 
 	for (i = 0; i < pids; i++) {
 		int exit_code, ret;
-		if ((ret = waitpid(pid[i], &exit_code)) == 0) {
+		if ((ret = waitpid(pid[i], &exit_code, 0)) == 0) {
 			if (exit_code == 0xbee) {
 				continue;
 			}

@@ -324,84 +324,6 @@ static uint64_t sys_halt(uint64_t arg[])
 	do_halt();
 	panic("halt returned");
 }
-
-static uint64_t(*syscalls[]) (uint64_t arg[]) = {
-[SYS_exit] sys_exit,
-	    [SYS_fork] sys_fork,
-	    [SYS_wait] sys_wait,
-	    [SYS_exec] sys_exec,
-	    [SYS_clone] sys_clone,
-	    [SYS_exit_thread] sys_exit_thread,
-	    [SYS_yield] sys_yield,
-	    [SYS_kill] sys_kill,
-	    [SYS_sleep] sys_sleep,
-	    [SYS_gettime] sys_gettime,
-	    [SYS_getpid] sys_getpid,
-	    [SYS_brk] sys_brk,
-	    [SYS_mmap] sys_mmap,
-	    [SYS_munmap] sys_munmap,
-	    [SYS_shmem] sys_shmem,
-	    [SYS_putc] sys_putc,
-	    [SYS_pgdir] sys_pgdir,
-	    [SYS_sem_init] sys_sem_init,
-	    [SYS_sem_post] sys_sem_post,
-	    [SYS_sem_wait] sys_sem_wait,
-	    [SYS_sem_free] sys_sem_free,
-	    [SYS_sem_get_value] sys_sem_get_value,
-	    [SYS_event_send] sys_event_send,
-	    [SYS_event_recv] sys_event_recv,
-	    [SYS_mbox_init] sys_mbox_init,
-	    [SYS_mbox_send] sys_mbox_send,
-	    [SYS_mbox_recv] sys_mbox_recv,
-	    [SYS_mbox_free] sys_mbox_free,
-	    [SYS_mbox_info] sys_mbox_info,
-	    [SYS_open] syscall_linux_open,
-	    [SYS_close] syscall_linux_close,
-	    [SYS_read] syscall_linux_read,
-	    [SYS_write] syscall_linux_write,
-	    [SYS_seek] sys_seek,
-	    [SYS_fstat] sys_fstat,
-	    [SYS_fsync] sys_fsync,
-	    [SYS_chdir] sys_chdir,
-	    [SYS_getcwd] sys_getcwd,
-	    [SYS_mkdir] sys_mkdir,
-	    [SYS_link] sys_link,
-	    [SYS_rename] sys_rename,
-	    [SYS_unlink] sys_unlink,
-	    [SYS_getdirentry] sys_getdirentry,
-	    [SYS_dup] sys_dup,
-      [SYS_pipe] sys_pipe,
-      [SYS_mkfifo] sys_mkfifo,
-      [SYS_halt] sys_halt,
-      [SYS_mount] syscall_linux_mount,
-      [SYS_umount] syscall_linux_umount
-    };
-
-#define NUM_SYSCALLS        ((sizeof(syscalls)) / (sizeof(syscalls[0])))
-
-void syscall(void)
-{
-	struct trapframe *tf = current->tf;
-	uint64_t arg[6];
-	int num = tf->tf_regs.reg_rax;
-	if (num >= 0 && num < NUM_SYSCALLS) {
-		if (syscalls[num] != NULL) {
-//if(num==SYS_exit || num==SYS_write)	 kprintf("syscall %d, pid = %d, name = %s  cs 0x%x.\n", num, current->pid, current->name, tf->tf_cs);
-			arg[0] = tf->tf_regs.reg_rdi;
-			arg[1] = tf->tf_regs.reg_rsi;
-			arg[2] = tf->tf_regs.reg_rdx;
-			arg[3] = tf->tf_regs.reg_rcx;
-			arg[4] = tf->tf_regs.reg_r8;
-			arg[5] = tf->tf_regs.reg_r9;
-			tf->tf_regs.reg_rax = syscalls[num] (arg);
-			return;
-		}
-	}
-	print_trapframe(tf);
-	panic("undefined syscall %d, pid = %d, name = %s.\n",
-	      num, current->pid, current->name);
-}
-
 #include "unistd_64.h"
 
 static uint64_t sys_linux_ioctl(uint64_t arg[])
@@ -420,10 +342,11 @@ static uint64_t sys_linux_waitpid(uint64_t arg[])
 	int pid = (int)arg[0];
 	int *store = (int *)arg[1];
 	int options = (int)arg[2];
-	void *rusage = (void *)arg[3];
-	if (options && rusage)
-		return -E_INVAL;
-	return do_linux_waitpid(pid, store);
+	//void *rusage = (void *)arg[3];
+	//if (rusage)
+	//	return -E_INVAL;
+	//return do_wait(pid, store) ;
+	return do_linux_waitpid(pid, store, options);
 }
 
 static uint64_t sys_linux_nanosleep(uint64_t arg[])
@@ -584,6 +507,94 @@ static uint64_t sys_linux_sigreturn(uint64_t arg[])
 	return do_sigreturn();
 }
 */
+
+static uint64_t(*syscalls[]) (uint64_t arg[]) = {
+[SYS_exit] sys_exit,
+	    [SYS_fork] sys_fork,
+	    [SYS_wait] sys_wait,
+	    [SYS_exec] sys_exec,
+	    [SYS_clone] sys_clone,
+	    [SYS_exit_thread] sys_exit_thread,
+	    [SYS_yield] sys_yield,
+	    [SYS_kill] sys_kill,
+	    [SYS_sleep] sys_sleep,
+	    [SYS_gettime] sys_gettime,
+	    [SYS_getpid] sys_getpid,
+	    [SYS_brk] sys_brk,
+	    [SYS_mmap] sys_mmap,
+	    [SYS_munmap] sys_munmap,
+	    [SYS_shmem] sys_shmem,
+	    [SYS_putc] sys_putc,
+	    [SYS_pgdir] sys_pgdir,
+	    [SYS_sem_init] sys_sem_init,
+	    [SYS_sem_post] sys_sem_post,
+	    [SYS_sem_wait] sys_sem_wait,
+	    [SYS_sem_free] sys_sem_free,
+	    [SYS_sem_get_value] sys_sem_get_value,
+	    [SYS_event_send] sys_event_send,
+	    [SYS_event_recv] sys_event_recv,
+	    [SYS_mbox_init] sys_mbox_init,
+	    [SYS_mbox_send] sys_mbox_send,
+	    [SYS_mbox_recv] sys_mbox_recv,
+	    [SYS_mbox_free] sys_mbox_free,
+	    [SYS_mbox_info] sys_mbox_info,
+	    [SYS_open] syscall_linux_open,
+	    [SYS_close] syscall_linux_close,
+	    [SYS_read] syscall_linux_read,
+	    [SYS_write] syscall_linux_write,
+	    [SYS_seek] sys_seek,
+	    [SYS_fstat] sys_fstat,
+	    [SYS_fsync] sys_fsync,
+	    [SYS_chdir] sys_chdir,
+	    [SYS_getcwd] sys_getcwd,
+	    [SYS_mkdir] sys_mkdir,
+	    [SYS_link] sys_link,
+	    [SYS_rename] sys_rename,
+	    [SYS_unlink] sys_unlink,
+	    [SYS_getdirentry] sys_getdirentry,
+	    [SYS_dup] sys_dup,
+		[SYS_pipe] sys_pipe,
+		[SYS_mkfifo] sys_mkfifo,
+		[SYS_halt] sys_halt,
+		[SYS_mount] syscall_linux_mount,
+		[SYS_umount] syscall_linux_umount,
+	    [SYS_ioctl] sys_linux_ioctl,
+		[SYS_linux_mmap] syscall_linux_mmap,
+		[SYS_linux_sigaction] syscall_linux_sigaction,
+		[SYS_linux_kill] sys_linux_kill,
+		[SYS_linux_sigprocmask] syscall_linux_sigprocmask,
+		[SYS_linux_sigsuspend] sys_linux_sigsuspend,
+		[SYS_linux_getrlimit] syscall_linux_getrlimit,
+		[SYS_linux_setrlimit] syscall_linux_setrlimit,
+		[SYS_linux_lstat] sysfile_linux_lstat,
+		[SYS_linux_waitpid] sys_linux_waitpid
+    };
+
+#define NUM_SYSCALLS        ((sizeof(syscalls)) / (sizeof(syscalls[0])))
+
+void syscall(void)
+{
+	struct trapframe *tf = current->tf;
+	uint64_t arg[6];
+	int num = tf->tf_regs.reg_rax;
+	if (num >= 0 && num < NUM_SYSCALLS) {
+		if (syscalls[num] != NULL) {
+//if(num==SYS_exit || num==SYS_write)	 kprintf("syscall %d, pid = %d, name = %s  cs 0x%x.\n", num, current->pid, current->name, tf->tf_cs);
+			arg[0] = tf->tf_regs.reg_rdi;
+			arg[1] = tf->tf_regs.reg_rsi;
+			arg[2] = tf->tf_regs.reg_rdx;
+			arg[3] = tf->tf_regs.reg_rcx;
+			arg[4] = tf->tf_regs.reg_r8;
+			arg[5] = tf->tf_regs.reg_r9;
+			tf->tf_regs.reg_rax = syscalls[num] (arg);
+			return;
+		}
+	}
+	print_trapframe(tf);
+	panic("undefined syscall %d, pid = %d, name = %s.\n",
+	      num, current->pid, current->name);
+}
+
 static uint64_t(*syscalls_linux[305]) (uint64_t arg[]);
 
 #define NUM_LINUX_SYSCALLS        ((sizeof(syscalls_linux)) / (sizeof(syscalls_linux[0])))
@@ -606,7 +617,7 @@ void syscall_linux()
       //panic("");
     }*/
 		if (syscalls_linux[num] != unknown)
-		if (syscalls_linux[num] != NULL) {
+		{if (syscalls_linux[num] != NULL) {
 	    //kprintf("%d : LINUX syscall %d, pid = %d, name = %s rip = %lx  ARGS :\r\n", ++count, num, current->pid, current->name
       //  , tf->tf_rip);
 	    arg[0] = tf->tf_regs.reg_rdi;
@@ -618,7 +629,8 @@ void syscall_linux()
 			tf->tf_regs.reg_rax = syscalls_linux[num] (arg);
       //if (num == __NR_ptrace) kprintf("LINUX syscall ret %d, returning %llx rip = %lx\r\n", num, tf->tf_regs.reg_rax, tf->tf_rip);
       return;
-		}
+		}}
+		else unknown(0) ;
 	}
 	print_trapframe(tf);
 	panic("undefined LINUX syscall %d, pid = %d, name = %s.\n",

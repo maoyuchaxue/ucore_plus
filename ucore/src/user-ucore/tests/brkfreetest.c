@@ -34,7 +34,7 @@ int main(void)
 		exit(0xdead);
 	}
 	assert(pid > 0);
-	assert(waitpid(pid, &exit_code) == 0 && exit_code != 0xdead);
+	assert(waitpid(pid, &exit_code, 0) == 0 && exit_code != 0xdead);
 	assert(exit_code != -E_PANIC);
 
 	cprintf("brkfreetest pass.\n");

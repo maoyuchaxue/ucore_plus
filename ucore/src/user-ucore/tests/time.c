@@ -17,7 +17,7 @@ int main(int argc, const char **argv)
 		} else if (pid == 0) {
 			__exec(NULL, argv + 1, NULL);
 		}
-		waitpid(pid, NULL);
+		waitpid(pid, NULL, 0);
 	}
 
 	uint64_t after = sys_gettime();

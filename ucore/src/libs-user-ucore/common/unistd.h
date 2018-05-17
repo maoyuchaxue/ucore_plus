@@ -2,6 +2,7 @@
 #define __LIBS_UNISTD_H__
 
 #define T_SYSCALL           0x80
+#define T_FAST_SYSCALL      0x83
 
 /* syscall number */
 #define SYS_exit            1
@@ -61,6 +62,7 @@
 #define SYS_linux_kill      146
 #define SYS_linux_sigprocmask   147
 #define SYS_linux_sigsuspend   148
+#define SYS_linux_sigreturn    149
 
 /* changlan */
 #define SYS_init_module     150
@@ -71,6 +73,12 @@
 
 /* zhangyk May 30 2016 */
 #define SYS_debug           155
+
+/* kzf: 2018/05 */
+#define SYS_linux_getrlimit  156
+#define SYS_linux_setrlimit  157
+#define SYS_linux_lstat     158
+#define SYS_linux_waitpid   159
 
 /* liucong 20121109 */
 #define SYS_rf212           199

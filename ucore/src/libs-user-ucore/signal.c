@@ -4,7 +4,7 @@
 sighandler_t signal(int sign, sighandler_t handler)
 {
 	struct sigaction act = { handler, NULL, 1 << (sign - 1), 0 };
-	sys_linux_sigaction(sign, &act, NULL);
+	sys_linux_action(sign, &act, NULL) ;
 	return handler;
 }
 
@@ -25,7 +25,12 @@ int sigprocmask(int how, const sigset_t * set, sigset_t * old)
 
 int sigsuspend(uint32_t mask)
 {
-	return sys_linux_sigsuspend(0, 0, mask);
+	return sys_linux_sigsuspend(mask);
+}
+
+int sigaction(int sig, const struct sigaction *act, struct sigaction *oact)
+{
+	return sys_linux_sigaction(sig, act, oact);
 }
 
 #if 0

@@ -13,9 +13,9 @@ int main(void)
 		exit(0xbeaf);
 	}
 	assert(pid > 0);
-	assert(waitpid(-1, NULL) != 0);
-	assert(waitpid(pid, (void *)0xC0000000) != 0);
-	assert(waitpid(pid, &exit_code) == 0 && exit_code == 0xbeaf);
+	assert(waitpid(-1, NULL, 0) != 0);
+	assert(waitpid(pid, (void *)0xC0000000, 0) != 0);
+	assert(waitpid(pid, &exit_code, 0) == 0 && exit_code == 0xbeaf);
 	cprintf("badarg pass.\n");
 	return 0;
 }
