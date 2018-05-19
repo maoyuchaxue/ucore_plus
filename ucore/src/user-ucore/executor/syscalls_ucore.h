@@ -2,12 +2,38 @@
 
 #if defined(__x86_64__) || 0
 #define GOARCH "amd64"
-#define SYZ_REVISION "277587fb6c542ca7062a505c11fc03ef9904f304"
+#define SYZ_REVISION "10a151dbb5e86ecc05669eef1b115f87da72acbc"
 #define SYZ_PAGE_SIZE 4096
 #define SYZ_NUM_PAGES 4096
 #define SYZ_DATA_OFFSET 536870912
-unsigned syscall_count = 1835;
-struct call_t syscalls[] = {
-    {"accept", 43},
+unsigned syscall_count = 26;
+call_t syscalls[] = {
+    {"open", 0, (syscall_t)open},
+    {"sys_brk", 0, (syscall_t)sys_brk},
+    {"sys_exec", 0, (syscall_t)sys_exec},
+    {"sys_exit", 0, (syscall_t)sys_exit},
+    {"sys_getpid", 0, (syscall_t)sys_getpid},
+    {"sys_gettime", 0, (syscall_t)sys_gettime},
+    {"sys_kill", 0, (syscall_t)sys_kill},
+    {"sys_mbox_free", 0, (syscall_t)sys_mbox_free},
+    {"sys_mbox_info", 0, (syscall_t)sys_mbox_info},
+    {"sys_mbox_init", 0, (syscall_t)sys_mbox_init},
+    {"sys_mbox_recv", 0, (syscall_t)sys_mbox_recv},
+    {"sys_mbox_send", 0, (syscall_t)sys_mbox_send},
+    {"sys_mmap", 0, (syscall_t)sys_mmap},
+    {"sys_pgdir", 0, (syscall_t)sys_pgdir},
+    {"sys_putc", 0, (syscall_t)sys_putc},
+    {"sys_recv_event", 0, (syscall_t)sys_recv_event},
+    {"sys_sem_free", 0, (syscall_t)sys_sem_free},
+    {"sys_sem_get_value", 0, (syscall_t)sys_sem_get_value},
+    {"sys_sem_init", 0, (syscall_t)sys_sem_init},
+    {"sys_sem_post", 0, (syscall_t)sys_sem_post},
+    {"sys_sem_wait", 0, (syscall_t)sys_sem_wait},
+    {"sys_send_event", 0, (syscall_t)sys_send_event},
+    {"sys_shmem", 0, (syscall_t)sys_shmem},
+    {"sys_sleep", 0, (syscall_t)sys_sleep},
+    {"sys_wait", 0, (syscall_t)sys_wait},
+    {"sys_yield", 0, (syscall_t)sys_yield},
+
 };
 #endif
