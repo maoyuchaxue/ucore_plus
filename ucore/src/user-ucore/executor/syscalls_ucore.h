@@ -7,7 +7,7 @@
 #define SYZ_NUM_PAGES 4096
 #define SYZ_DATA_OFFSET 536870912
 unsigned syscall_count = 26;
-call_t syscalls[] = {
+struct call_t syscalls[] = {
     {"open", 0, (syscall_t)open},
     {"sys_brk", 0, (syscall_t)sys_brk},
     {"sys_exec", 0, (syscall_t)sys_exec},

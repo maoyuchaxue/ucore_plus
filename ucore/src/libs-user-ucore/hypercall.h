@@ -16,8 +16,8 @@
 #define HYPERCALL_KAFL_LOCK				10
 #define HYPERCALL_KAFL_INFO				11
 #define HYPERCALL_KAFL_NEXT_PAYLOAD		12
-#define KAFL_GUEST_GET_INPIPE           14
-#define KAFL_GUEST_GET_OUTPIPE          15
+#define HYPERCALL_KAFL_GET_INPIPE       14
+#define HYPERCALL_KAFL_GET_OUTPIPE      15
 
 #define PAYLOAD_SIZE					(16  << 20)				/* up to 128KB payloads */
 #define PROGRAM_SIZE					(16  << 20)				/* kAFL supports 16MB programm data */

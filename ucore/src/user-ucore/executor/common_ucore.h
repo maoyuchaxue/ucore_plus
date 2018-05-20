@@ -496,8 +496,8 @@ static void loop()
 				fail("failed to chdir");
 #endif
 #if defined(SYZ_EXECUTOR)
-			close(kInPipeFd); // 干活进程不再需要管两个Pipe
-			close(kOutPipeFd);
+			// close(kInPipeFd); // 干活进程不再需要管两个Pipe
+			// close(kOutPipeFd);
 #endif
 #if defined(SYZ_EXECUTOR)
 			output_pos = output_data;
