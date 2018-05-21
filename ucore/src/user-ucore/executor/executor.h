@@ -343,8 +343,9 @@ retry:
 		cover_enable(&threads[0]); //KCOV选项，现在等于没有
 
 	int call_index = 0;
-	for (;;) { // 从input_pos接受程序和数据等
+	for (;;) { 
 		uint64 call_num = read_input(&input_pos);
+		// 以下三种call_num是非常规call，用于从input_pos接受程序和数据等，准备运行环境
 		if (call_num == instr_eof)
 			break;
 		if (call_num == instr_copyin) {
@@ -591,7 +592,7 @@ void handle_completion(struct thread_t* th) // checked
 	if (event_isset(&th->ready) || !event_isset(&th->done) || th->handled)
 		fail("bad thread state in completion: ready=%d done=%d handled=%d",
 		     event_isset(&th->ready), event_isset(&th->done), th->handled);
-	if (th->res != (long)-1) {
+	if (th->res >= 0) {
 		if (th->copyout_index != no_copyout) {
 			if (th->copyout_index >= kMaxCommands)
 				fail("result idx %lld overflows kMaxCommands", th->copyout_index);
@@ -624,7 +625,7 @@ void handle_completion(struct thread_t* th) // checked
 	if (!collide && !th->colliding) {
 		write_output(th->call_index);
 		write_output(th->call_num);
-		uint32 reserrno = th->res != -1 ? 0 : th->reserrno;
+		uint32 reserrno = th->res ;
 		write_output(reserrno);
 		write_output(th->fault_injected);
 		uint32* signal_count_pos = write_output(0); // filled in later
@@ -724,8 +725,8 @@ void execute_call(struct thread_t* th)
 		debug("fault injected: %d\n", th->fault_injected);
 	}
 
-	if (th->res == -1)
-		debug("#%d: %s = errno(%d)\n", th->id, call->name, th->reserrno);
+	if (th->res < 0)
+		debug("#%d: %s = errno(%d)\n", th->id, call->name, th->res);
 	else
 		debug("#%d: %s = 0x%lx\n", th->id, call->name, th->res);
 	event_set(&th->done);

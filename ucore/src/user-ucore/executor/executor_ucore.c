@@ -234,46 +234,14 @@ void write_completed(uint32 completed) // checked
 	debug("wait ended...") ;
 }
 
-/*
-bool kcov_comparison_t::ignore() const // checked
-{
-	// Comparisons with 0 are not interesting, fuzzer should be able to guess 0's without help.
-	if (arg1 == 0 && (arg2 == 0 || (type & KCOV_CMP_CONST)))
-		return true;
-	if ((type & KCOV_CMP_SIZE_MASK) == KCOV_CMP_SIZE8) {
-		// This can be a pointer (assuming 64-bit kernel).
-		// First of all, we want avert fuzzer from our output region.
-		// Without this fuzzer manages to discover and corrupt it.
-		uint64 out_start = (uint64)kOutputDataAddr;
-		uint64 out_end = out_start + kMaxOutput;
-		if (arg1 >= out_start && arg1 <= out_end)
-			return true;
-		if (arg2 >= out_start && arg2 <= out_end)
-			return true;
-#if defined(__i386__) || defined(__x86_64__)
-		// Filter out kernel physical memory addresses.
-		// These are internal kernel comparisons and should not be interesting.
-		// The range covers first 1TB of physical mapping.
-		uint64 kmem_start = (uint64)0xffff880000000000ull;
-		uint64 kmem_end = (uint64)0xffff890000000000ull;
-		bool kptr1 = arg1 >= kmem_start && arg1 <= kmem_end;
-		bool kptr2 = arg2 >= kmem_start && arg2 <= kmem_end;
-		if (kptr1 && kptr2)
-			return true;
-		if (kptr1 && arg2 == 0)
-			return true;
-		if (kptr2 && arg1 == 0)
-			return true;
-#endif
-	}
-	return false;
-}*/
-
 // 检查系统到底是多少位的
 static bool detect_kernel_bitness() // checked
 {
 	if (sizeof(void*) == 8)
 		return true;
+	return false ;
+	// 由于没有相应的文件，因此不采用下面的较为复杂的判定法。
+	/*
 	// It turns out to be surprisingly hard to understand if the kernel underneath is 64-bits.
 	// A common method is to look at uname.machine. But it is produced in some involved ways,
 	// and we will need to know about all strings it returns and in the end it can be overriden
@@ -289,5 +257,5 @@ static bool detect_kernel_bitness() // checked
 		close(fd);
 	}
 	debug("detected %d-bit kernel\n", wide ? 64 : 32);
-	return wide;
+	return wide;*/
 }

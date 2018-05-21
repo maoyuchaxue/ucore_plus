@@ -58,8 +58,10 @@ __attribute__((noreturn)) static void doexit(int status) // checked
 #endif
 
 #if defined(SYZ_EXECUTOR) || defined(SYZ_HANDLE_SEGV)
+#define _JBLEN  10      /* size, in longs, of a jmp_buf */
+typedef long jmp_buf[_JBLEN]; 
 static atomic_t skip_segv;
-//static jmp_buf segv_env;
+static jmp_buf segv_env;
 
 //以下的三个函数主要是为了考虑到在进行生成的程序中可能存在一些违法地址而导致SIGSEGV，解决办法便是通过sigaction调用segv_handler函数，
 //但是为了简化先不考虑这个
@@ -325,18 +327,12 @@ static void remove_dir(const char* dir) // checked...?
 	struct dirent* ep;
 	int iter = 0;
 retry:
-	// using umount might be a severe problem, but we have to test it first
-	while (umount(dir) == 0) { 
-		debug("umount(%s)\n", dir);
-	}
+	// 由于没有mount系统调用，所以暂时不需要umount
+	//while (umount(dir) == 0) { 
+	//	debug("umount(%s)\n", dir);
+	//}
 	dp = opendir(dir);
 	if (dp == NULL) {
-		/*if (errno == EMFILE) {
-			// This happens when the test process casts prlimit(NOFILE) on us.
-			// Ideally we somehow prevent test processes from messing with parent processes.
-			// But full sandboxing is expensive, so let's ignore this error for now.
-			exitf("opendir(%s) failed due to NOFILE, exiting", dir);
-		}*/
 		exitf("opendir(%s) failed", dir);
 	}
 	while ((ep = readdir(dp))) {
@@ -352,6 +348,7 @@ retry:
 			continue;
 		}
 		int i;
+		// 删除文件
 		for (i = 0;; i++) {
 			debug("unlink(%s)\n", filename);
 			if (unlink(filename) == 0)
@@ -363,8 +360,8 @@ retry:
 			if (i > 100)
 				exitf("unlink(%s) failed", filename);
 			debug("umount(%s)\n", filename);
-			if (umount(filename))
-				exitf("umount(%s) failed", filename);
+			//if (umount(filename))
+			//	exitf("umount(%s) failed", filename);
 		}
 	}
 	closedir(dp);
@@ -570,7 +567,7 @@ static void loop()
 			//过了一定时间就杀了工作进程
 			debug("waitpid(%d)=%d\n", pid, res);
 			debug("killing\n");
-			kill(-pid);
+			//kill(-pid);
 			kill(pid);
 			while (waitpid(-1, &status, 0) != pid) {
 			}
