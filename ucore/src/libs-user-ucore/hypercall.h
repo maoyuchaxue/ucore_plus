@@ -32,17 +32,18 @@ typedef struct{
 
 static inline void kAFL_hypercall(uint64_t rbx, uint64_t rcx){
 	uint64_t rax = HYPERCALL_KAFL_RAX_ID;
-	asm ("movq %0, %%rcx;" : : "r"(rcx));
-	asm ("movq %0, %%rbx;" : : "r"(rbx));
-    asm ("movq %0, %%rax;" : : "r"(rax));
-    asm ("vmcall");
+	volatile asm ("movq %0, %%rcx;" : : "r"(rcx));
+	volatile asm ("movq %0, %%rbx;" : : "r"(rbx));
+    volatile asm ("movq %0, %%rax;" : : "r"(rax));
+    volatile asm ("vmcall");
+	kprintf("VMCALL end\n") ;
 }
 
 static inline void hypercall(uint64_t rax, uint64_t rbx, uint64_t rcx){
-	asm ("movq %0, %%rcx;" : : "r"(rcx));
-	asm ("movq %0, %%rbx;" : : "r"(rbx));
-    asm ("movq %0, %%rax;" : : "r"(rax));
-    asm ("vmcall");
+	volatile asm ("movq %0, %%rcx;" : : "r"(rcx));
+	volatile asm ("movq %0, %%rbx;" : : "r"(rbx));
+    volatile asm ("movq %0, %%rax;" : : "r"(rax));
+    volatile asm ("vmcall");
 }
 
 #endif
