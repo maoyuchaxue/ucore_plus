@@ -16,10 +16,14 @@
 #define HYPERCALL_KAFL_LOCK				10
 #define HYPERCALL_KAFL_INFO				11
 #define HYPERCALL_KAFL_NEXT_PAYLOAD		12
+#define HYPERCALL_KAFL_GET_INPIPE       14
+#define HYPERCALL_KAFL_GET_OUTPIPE      15
 
 #define PAYLOAD_SIZE					(16  << 20)				/* up to 128KB payloads */
 #define PROGRAM_SIZE					(16  << 20)				/* kAFL supports 16MB programm data */
 #define INFO_SIZE                       (16  << 20)				/* 128KB info string */
+#define INPIPE_SIZE					(128 << 10)	/* 128KB in pipe buffer */
+#define OUTPIPE_SIZE				(128 << 10)	/* 128KB out pipe buffer */
 #define TARGET_FILE						"/tmp/fuzzing_engine"	/* default target for the userspace component */
 #define TARGET_FILE_WIN					"fuzzing_engine.exe"	
 

@@ -35,8 +35,8 @@
 const unsigned long KCOV_TRACE_PC = 0;
 const unsigned long KCOV_TRACE_CMP = 1;
 
-const int kInFd = 3;
-const int kOutFd = 4;
+// const int kInFd = 3;
+// const int kOutFd = 4;
 
 // The address chosen must also work on 32-bit kernels with 1GB user address space.
 void* const kOutputDataAddr = (void*)0x1b2bc20000ull;
@@ -72,16 +72,17 @@ int main(int argc, char** argv) // checked
 #define MAP_FIXED 0x10
 #define MAP_ANON 0x1000
 
-	if (sys_linux_mmap(&input_data[0], kMaxInput, PROT_READ, MAP_PRIVATE | MAP_FIXED, kInFd, 0) != &input_data[0])
-		fail("mmap of input file failed");
+	// if (sys_linux_mmap(&input_data[0], kMaxInput, PROT_READ, MAP_PRIVATE | MAP_FIXED, kInFd, 0) != &input_data[0])
+	// 	fail("mmap of input file failed");
 	// The output region is the only thing in executor process for which consistency matters.
 	// If it is corrupted ipc package will fail to parse its contents and panic.
 	// But fuzzer constantly invents new ways of how to currupt the region,
 	// so we map the region at a (hopefully) hard to guess address surrounded by unmapped pages.
 	output_data = (uint32*)sys_linux_mmap(kOutputDataAddr, kMaxOutput,
-				    PROT_READ | PROT_WRITE, MAP_SHARED | MAP_FIXED, kOutFd, 0);
+				    PROT_READ | PROT_WRITE, MAP_SHARED | MAP_FIXED | MAP_ANON, -1, 0);
 	if (output_data != kOutputDataAddr)
 		fail("mmap of output file failed");
+
 	if (sys_linux_mmap((void*)SYZ_DATA_OFFSET, SYZ_NUM_PAGES * SYZ_PAGE_SIZE, PROT_READ | PROT_WRITE,
 		 MAP_ANON | MAP_PRIVATE | MAP_FIXED, -1, 0) != (void*)SYZ_DATA_OFFSET)
 		fail("mmap of data segment failed");
@@ -90,8 +91,8 @@ int main(int argc, char** argv) // checked
 	// Due to races in collider mode, a program can e.g. ftruncate one of these fds,
 	// which will cause fuzzer to crash.
 	// That's also the reason why we close kInPipeFd/kOutPipeFd below.
-	close(kInFd);
-	close(kOutFd);
+	// close(kInFd);
+	// close(kOutFd);
 	
 	// 建立控制管道，也许需要更新
 	setup_control_pipes();
