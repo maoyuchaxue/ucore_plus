@@ -22,7 +22,7 @@
 #define  kMaxInput   (16 << 20)
 #define  kMaxOutput  (16 << 20)
 #define  kCoverSize  (256 << 10)
-#define  kPipeSize   (256 << 10)
+#define  kPipeSize   (1 << 20)
 #define  kMaxArgs  9
 #define  kMaxThreads  16
 #define  kMaxCommands  1000
@@ -74,7 +74,9 @@ bool is_kernel_64_bit = true;
 
 ALIGNED(64 << 10)
 char input_data[kMaxInput];
+ALIGNED(64 << 10)
 char outpipe_data[kPipeSize];
+ALIGNED(64 << 10)
 char inpipe_data[kPipeSize];
 
 // Checksum kinds.
@@ -225,6 +227,7 @@ void parse_env_flags(uint64 flags) // checked
 //接受一次握手指令
 void receive_handshake() // checked
 {
+	cprintf("receiving handshake\n");
 	struct handshake_req *req = (struct handshake_req *)(&(inpipe_data[0]));
 	while (1) {
 		kAFL_hypercall(HYPERCALL_KAFL_GET_INPIPE, (uint64_t)inpipe_data);

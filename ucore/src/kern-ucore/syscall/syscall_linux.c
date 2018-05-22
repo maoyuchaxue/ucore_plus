@@ -287,6 +287,7 @@ machine_word_t syscall_linux_mmap(machine_word_t args[])
 	//kprintf
 	//    ("TODO __sys_linux_mmap2 addr=%08x len=%08x prot=%08x flags=%08x fd=%d off=%08x\n",
 	//     addr, len, prot, flags, fd, off);
+  kprintf("map flag: %d, %d\n", flags, MAP_ANONYMOUS);
 	if (fd == -1 || flags & MAP_ANONYMOUS) {
 		if (flags & MAP_FIXED) {
 			return linux_regfile_mmap2(addr, len, prot, flags, fd,
