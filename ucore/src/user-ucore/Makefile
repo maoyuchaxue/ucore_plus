@@ -52,7 +52,7 @@ ifeq ("$(shell git diff --shortstat)", "")
 else
 endif
 
-$(BIN)/syz-executor: executor/executor_ucore.c 
+$(BIN)/syz-executor: executor/executor_ucore.c executor/executor_ucore.h executor/executor.h executor/common.h executor/common_ucore.h executor/syscalls_ucore.h
 	$(TARGET_CC) $(TARGET_CFLAGS) -c -o $(USER_OBJ_ROOT)/$(addsuffix .o,syz-executor) executor/executor_ucore.c 
 	$(TARGET_LD) $(TARGET_LDFLAGS) -static -T $(USER_LIB_SRCDIR)/arch/$(ARCH)/user.ld $(USER_OBJ_ROOT)/$(addsuffix .o,syz-executor) $(INITCODE_OBJ) $(USER_LIB) -o $@
 

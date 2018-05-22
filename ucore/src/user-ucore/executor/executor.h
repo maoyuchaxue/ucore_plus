@@ -231,6 +231,7 @@ void receive_handshake() // checked
 	struct handshake_req *req = (struct handshake_req *)(&(inpipe_data[0]));
 	while (1) {
 		kAFL_hypercall(HYPERCALL_KAFL_GET_INPIPE, (uint64_t)inpipe_data);
+		cprintf("handshake magic: %d\n", req->magic);
 		if (req->magic == kInMagic) {
 			break;
 		}
@@ -316,10 +317,11 @@ void receive_execute(bool need_prog) // checked
 //回复一次握手指令
 void reply_execute(int status)// checked
 {
+	debug("reply execute\n");
 	struct execute_reply *reply = (struct execute_reply *)(&(outpipe_data[0]));
 	reply->magic = kOutMagic;
 	reply->done = true;
-	reply->status = status;
+	reply->status = status + 97;
 
 	// if (write(kOutPipeFd, &reply, sizeof(reply)) != sizeof(reply))
 	// 	fail("control pipe write failed");
@@ -484,13 +486,15 @@ retry:
 			}*/
 		} else {
 			// Execute directly.
+
+			debug("Execute directly\n");
 			if (th != &threads[0])
 				fail("using non-main thread in non-thread mode");
 			execute_call(th);
 			handle_completion(th);
 		}
 	}
-
+	debug("execution finished, send out output_data\n");
     kAFL_hypercall(HYPERCALL_KAFL_INFO, (uint64_t)output_data);
 
 	if (flag_collide && !flag_inject_fault && !colliding && !collide) {
@@ -694,6 +698,7 @@ void* worker_thread(void* arg)
 
 void execute_call(struct thread_t* th)
 {
+	debug("execute call\n");
 	event_reset(&th->ready);
 	struct call_t* call = &syscalls[th->call_num];
 	debug("#%d: %s(", th->id, call->name);

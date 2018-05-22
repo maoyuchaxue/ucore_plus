@@ -1273,9 +1273,9 @@ execve_exit:
 	put_kargv(argc, kargv);
 	put_kargv(envc, kenvp);
 /* exec should return -1 if failed */
-	//return ret;
-	do_exit(ret);
-	panic("already exit: %e.\n", ret);
+	return ret;
+	// do_exit(ret);
+	// panic("already exit: %e.\n", ret);
 }
 
 // do_yield - ask the scheduler to reschedule
