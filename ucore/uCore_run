@@ -131,7 +131,7 @@ case $UCONFIG_ARCH in
         fi
         EXTRA_OPT="-serial file:$BUILD_DIR/serial.log$TEST_POSTFIX"
         if [[ $TEST_MODE = y ]]; then
-            EXTRA_OPT+=" -S -display none -gdb tcp::$GDB_PORT "
+            EXTRA_OPT+=" -S -gdb tcp::$GDB_PORT "
         else
             if [[ $COMMAND_LINE_MODE = y ]]; then
                 echo -e "\033[0;36;1mNote: Qemu is running under no graphic mode. Press 'Ctrl-a x' to exit\033[0m"
@@ -144,9 +144,9 @@ case $UCONFIG_ARCH in
             fi
         fi
         echo -drive file=$BUILD_DIR/sfs-orig.img$TEST_POSTFIX,media=disk,cache=writeback,index=2 
-        exec $QEMU -m 512 \
-            -hda $BUILD_DIR/kernel.img$TEST_POSTFIX \
-            -drive file=$BUILD_DIR/sfs.img$TEST_POSTFIX,media=disk,cache=writeback,index=2 \
+        exec $QEMU -m 1024 \
+            -kernel $BUILD_DIR/kernel.img$TEST_POSTFIX \
+            -drive file=$BUILD_DIR/sfs-orig.img$TEST_POSTFIX,media=disk,cache=writeback,index=2 \
             -net nic,model=e1000 -net dump,file=/tmp/vm0.pcap \
             -net user,id=mynet0,net=192.168.76.0/24,hostfwd=tcp::10023-:22 \
             $EXTRA_OPT

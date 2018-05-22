@@ -124,14 +124,21 @@ NORETURN PRINTF static void exitf(const char* msg, ...) // checked
 #if defined(SYZ_EXECUTOR) || defined(SYZ_DEBUG)
 static int flag_debug;
 
+sem_t debug_mutex ;
+int pid ;
+
 PRINTF static void debug(const char* msg, ...) // checked?
 {
 	if (!flag_debug)
 		return;
+	sem_wait(debug_mutex) ;
+	pid = getpid() ;
 	va_list args;
 	va_start(args, msg);
+	cprintf("<debug message from pid: %d>    ", pid);
 	vfprintf(stderr, msg, args);
 	va_end(args);
+	sem_post(debug_mutex) ;
 	//fflush(stderr); // 不用fflush会影响吗？不知道。。
 }
 #endif

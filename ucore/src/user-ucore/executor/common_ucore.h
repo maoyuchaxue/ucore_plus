@@ -129,7 +129,7 @@ static uint64 current_time_ms() // checked
 #if defined(SYZ_EXECUTOR)
 static void sleep_ms(uint64 ms) // checked
 {
-	sleep(ms * 1000);
+	sleep(ms);
 }
 #endif
 
@@ -479,6 +479,7 @@ static void loop()
 		// TODO: consider moving the read into the child.
 		// Potentially it can speed up things a bit -- when the read finishes
 		// we already have a forked worker process.
+		debug("receiving execute signal\n") ;
 		receive_execute(false);
 #endif
 		//建立子进程开始工作
@@ -519,21 +520,22 @@ static void loop()
 		//记录已经处理的calls
 		uint64 last_executed = start;
 		// 用semaphone代替了atomic_load
-		debug("waiting for output_data_mutex...") ;
+		debug("waiting for output_data_mutex...\n") ;
 		sem_wait(output_data_mutex) ;
 		uint32 executed_calls = *output_data;
 		sem_post(output_data_mutex) ;
-		debug("wait ended...") ;
+		debug("wait ended...\n") ;
 #endif
 		//等子进程结束
 		for (;;) {
 			int res = waitpid(-1, &status, 1); // 1 means WNOHANG
+			debug("waiting for pid: %d\n", res) ;
 			if (res == pid) {
 				// 结束了
 				debug("waitpid(%d)=%d\n", pid, res);
 				break;
 			}
-			sleep(1000);
+			sleep(1);
 #if defined(SYZ_EXECUTOR)
 			// Even though the test process executes exit at the end
 			// and execution time of each syscall is bounded by 20ms,
@@ -547,12 +549,13 @@ static void loop()
 			// and kill it after 500ms of inactivity.
 			uint64 now = current_time_ms();
 			
+			debug("current_time: %d...\n", now) ;
 			// 用semaphone代替了atomic_load
-			debug("waiting for output_data_mutex...") ;
+			debug("waiting for output_data_mutex...\n") ;
 			sem_wait(output_data_mutex) ;
 			uint32 now_executed = *output_data;
 			sem_post(output_data_mutex) ;
-			debug("wait ended...") ;
+			debug("wait ended...\n") ;
 
 			if (executed_calls != now_executed) {
 				executed_calls = now_executed;
@@ -582,6 +585,7 @@ static void loop()
 		reply_execute(0);
 #endif
 #if defined(SYZ_EXECUTOR) || defined(SYZ_USE_TMP_DIR)
+		debug("removing dir\n") ;
 		remove_dir(cwdbuf);
 #endif
 #if defined(SYZ_EXECUTOR) || defined(SYZ_RESET_NET_NAMESPACE)

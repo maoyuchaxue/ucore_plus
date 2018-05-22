@@ -1271,9 +1271,9 @@ execve_exit:
 	put_kargv(argc, kargv);
 	put_kargv(envc, kenvp);
 /* exec should return -1 if failed */
-	//return ret;
-	do_exit(ret);
-	panic("already exit: %e.\n", ret);
+	return ret;
+	// do_exit(ret);
+	// panic("already exit: %e.\n", ret);
 }
 
 // do_yield - ask the scheduler to reschedule
@@ -1931,7 +1931,8 @@ static int user_main(void *arg)
 	KERNEL_EXECVE2(UNITTEST);
 #endif
 #else
-	__KERNEL_EXECVE("/bin/sh", "/bin/sh");
+	__KERNEL_EXECVE("/bin/syz-executor", "/bin/syz-executor");
+	// __KERNEL_EXECVE("/bin/sh", "/bin/sh");
 #endif
 	kprintf("user_main execve failed, no /bin/sh?.\n");
 }

@@ -51,7 +51,9 @@ static bool detect_kernel_bitness();
 
 int main(int argc, char** argv) // checked
 {
+	fprintf(1, "executor main\n");
 	output_data_mutex = sem_init(1) ;
+	debug_mutex = sem_init(1);
 
 	is_kernel_64_bit = detect_kernel_bitness();
 	if (argc == 2 && strcmp(argv[1], "version") == 0) {
@@ -70,7 +72,7 @@ int main(int argc, char** argv) // checked
 #define MAP_SHARED 0x1
 #define MAP_PRIVATE 0x2
 #define MAP_FIXED 0x10
-#define MAP_ANON 0x1000
+#define MAP_ANON 0x20
 
 	// if (sys_linux_mmap(&input_data[0], kMaxInput, PROT_READ, MAP_PRIVATE | MAP_FIXED, kInFd, 0) != &input_data[0])
 	// 	fail("mmap of input file failed");
@@ -78,6 +80,8 @@ int main(int argc, char** argv) // checked
 	// If it is corrupted ipc package will fail to parse its contents and panic.
 	// But fuzzer constantly invents new ways of how to currupt the region,
 	// so we map the region at a (hopefully) hard to guess address surrounded by unmapped pages.
+	cprintf("executor mmaping\n");
+	debug("mmmaping\n");
 	output_data = (uint32*)sys_linux_mmap(kOutputDataAddr, kMaxOutput,
 				    PROT_READ | PROT_WRITE, MAP_SHARED | MAP_FIXED | MAP_ANON, -1, 0);
 	if (output_data != kOutputDataAddr)
@@ -86,7 +90,7 @@ int main(int argc, char** argv) // checked
 	if (sys_linux_mmap((void*)SYZ_DATA_OFFSET, SYZ_NUM_PAGES * SYZ_PAGE_SIZE, PROT_READ | PROT_WRITE,
 		 MAP_ANON | MAP_PRIVATE | MAP_FIXED, -1, 0) != (void*)SYZ_DATA_OFFSET)
 		fail("mmap of data segment failed");
-
+	debug("mmmaping finished\n");
 	// Prevent random programs to mess with these fds.
 	// Due to races in collider mode, a program can e.g. ftruncate one of these fds,
 	// which will cause fuzzer to crash.
@@ -98,6 +102,7 @@ int main(int argc, char** argv) // checked
 	setup_control_pipes();
 	// 和fuzzer握手，需要更新
 	receive_handshake();
+	debug("handshake received\n");
 
 	// 创建KCOV的cover，可以忽略
 	// cover_open(); 

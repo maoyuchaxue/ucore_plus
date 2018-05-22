@@ -2,38 +2,32 @@
 
 #if defined(__x86_64__) || 0
 #define GOARCH "amd64"
-#define SYZ_REVISION "10a151dbb5e86ecc05669eef1b115f87da72acbc"
+#define SYZ_REVISION "dce9e49ca9186930b58482f3dda37026ade77a8c"
 #define SYZ_PAGE_SIZE 4096
 #define SYZ_NUM_PAGES 4096
 #define SYZ_DATA_OFFSET 536870912
-unsigned syscall_count = 26;
+unsigned syscall_count = 20;
 struct call_t syscalls[] = {
-    {"open", 0, (syscall_t)open},
-    {"sys_brk", 0, (syscall_t)sys_brk},
-    {"sys_exec", 0, (syscall_t)sys_exec},
-    {"sys_exit", 0, (syscall_t)sys_exit},
-    {"sys_getpid", 0, (syscall_t)sys_getpid},
-    {"sys_gettime", 0, (syscall_t)sys_gettime},
-    {"sys_kill", 0, (syscall_t)sys_kill},
-    {"sys_mbox_free", 0, (syscall_t)sys_mbox_free},
-    {"sys_mbox_info", 0, (syscall_t)sys_mbox_info},
-    {"sys_mbox_init", 0, (syscall_t)sys_mbox_init},
-    {"sys_mbox_recv", 0, (syscall_t)sys_mbox_recv},
-    {"sys_mbox_send", 0, (syscall_t)sys_mbox_send},
-    {"sys_mmap", 0, (syscall_t)sys_mmap},
-    {"sys_pgdir", 0, (syscall_t)sys_pgdir},
-    {"sys_putc", 0, (syscall_t)sys_putc},
-    {"sys_recv_event", 0, (syscall_t)sys_recv_event},
-    {"sys_sem_free", 0, (syscall_t)sys_sem_free},
-    {"sys_sem_get_value", 0, (syscall_t)sys_sem_get_value},
-    {"sys_sem_init", 0, (syscall_t)sys_sem_init},
-    {"sys_sem_post", 0, (syscall_t)sys_sem_post},
-    {"sys_sem_wait", 0, (syscall_t)sys_sem_wait},
-    {"sys_send_event", 0, (syscall_t)sys_send_event},
-    {"sys_shmem", 0, (syscall_t)sys_shmem},
-    {"sys_sleep", 0, (syscall_t)sys_sleep},
-    {"sys_wait", 0, (syscall_t)sys_wait},
-    {"sys_yield", 0, (syscall_t)sys_yield},
+    {"SYS_brk", 19},
+    {"SYS_event_send", 48},
+    {"SYS_exec", 4},
+    {"SYS_getpid", 18},
+    {"SYS_gettime", 17},
+    {"SYS_mbox_free", 53},
+    {"SYS_mbox_info", 54},
+    {"SYS_mbox_init", 50},
+    {"SYS_mbox_send", 51},
+    {"SYS_mmap", 20},
+    {"SYS_open", 100},
+    {"SYS_pgdir", 31},
+    {"SYS_putc", 30},
+    {"SYS_sem_free", 43},
+    {"SYS_sem_get_value", 44},
+    {"SYS_sem_init", 40},
+    {"SYS_sem_post", 41},
+    {"SYS_shmem", 22},
+    {"SYS_wait", 3},
+    {"SYS_yield", 10},
 
 };
 #endif
