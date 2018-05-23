@@ -341,8 +341,9 @@ retry:
 		char filename[4096];
 		snprintf(filename, sizeof(filename), "%s/%s", dir, ep->name);
 		struct linux_stat st;
-		if (lstat(filename, &st)) 
-			exitf("lstat(%s) failed", filename);
+		int lstatRet = lstat(filename, &st) ;
+		if (lstatRet) 
+			exitf("lstat(%s) failed: %d", filename, lstatRet);
 		if (S_ISDIR(st.st_mode)) {
 			remove_dir(filename);
 			continue;

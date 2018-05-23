@@ -566,7 +566,7 @@ static uint64_t(*syscalls[]) (uint64_t arg[]) = {
 		[SYS_linux_sigsuspend] sys_linux_sigsuspend,
 		[SYS_linux_getrlimit] syscall_linux_getrlimit,
 		[SYS_linux_setrlimit] syscall_linux_setrlimit,
-		[SYS_linux_lstat] sysfile_linux_lstat,
+		[SYS_linux_lstat] syscall_linux_lstat,
 		[SYS_linux_waitpid] sys_linux_waitpid
     };
 

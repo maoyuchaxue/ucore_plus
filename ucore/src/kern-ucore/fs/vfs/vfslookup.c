@@ -78,6 +78,7 @@ int vfs_lookup(const char *path, struct inode **node_store, bool follow_symlink)
   char *full_path = kmalloc(4096);
   char *full_path_expand_buffer;
   char *symbolic_link_buffer;
+
   strcpy(full_path, path);
   for(;;) {
     char *sub_path;
