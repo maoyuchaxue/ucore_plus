@@ -4,7 +4,7 @@
 sighandler_t signal(int sign, sighandler_t handler)
 {
 	struct sigaction act = { handler, NULL, 1 << (sign - 1), 0 };
-	sys_linux_action(sign, &act, NULL) ;
+	sys_linux_sigaction(sign, &act, NULL) ;
 	return handler;
 }
 
