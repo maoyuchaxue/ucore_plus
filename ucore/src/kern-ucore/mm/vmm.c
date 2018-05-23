@@ -290,6 +290,7 @@ insert_vma_rb(rb_tree * tree, struct vma_struct *vma,
 // insert_vma_struct -insert vma in mm's rb tree link & list link
 void insert_vma_struct(struct mm_struct *mm, struct vma_struct *vma)
 {
+	// kprintf("vma: start 0x%08x, end 0x%08x\n", vma->vm_start, vma->vm_end);
 	assert(vma->vm_start < vma->vm_end);
 	list_entry_t *list = &(mm->mmap_list);
 	list_entry_t *le_prev = list, *le_next;

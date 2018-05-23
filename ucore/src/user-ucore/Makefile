@@ -15,7 +15,8 @@ BIN := $(USER_OBJ_ROOT)/bin
 TESTBIN := $(USER_OBJ_ROOT)/testbin
 INITIAL_DIR := _initial
 
-USER_APPLIST:= cat pwd cat sh ls cp echo link mkdir rename unlink lsmod insmod rmmod mount umount halt udb program_fpga hypercalltest test_lstat
+USER_APPLIST:= cat pwd cat sh ls cp echo link mkdir rename unlink lsmod insmod rmmod mount umount halt udb program_fpga hypercalltest test_mmap_fail test_lstat
+
 ifneq ($(UCORE_TEST),)
 USER_TESTLIST := $(basename $(wildcard tests/*.c))
 USER_TESTLIST += $(basename $(wildcard tests/arch/$(ARCH)/*.c))
