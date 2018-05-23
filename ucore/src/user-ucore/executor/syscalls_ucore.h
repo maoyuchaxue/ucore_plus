@@ -2,31 +2,56 @@
 
 #if defined(__x86_64__) || 0
 #define GOARCH "amd64"
-#define SYZ_REVISION "dce9e49ca9186930b58482f3dda37026ade77a8c"
+#define SYZ_REVISION "0e919a06e9190034ab5566766892df068275fbab"
 #define SYZ_PAGE_SIZE 4096
 #define SYZ_NUM_PAGES 4096
 #define SYZ_DATA_OFFSET 536870912
-unsigned syscall_count = 20;
+unsigned syscall_count = 45;
 struct call_t syscalls[] = {
     {"SYS_brk", 19},
+    {"SYS_chdir", 120},
+    {"SYS_close", 101},
+    {"SYS_dup", 130},
     {"SYS_event_send", 48},
     {"SYS_exec", 4},
+    {"SYS_fstat", 110},
+    {"SYS_fsync", 111},
+    {"SYS_getcwd", 121},
+    {"SYS_getdirentry", 128},
     {"SYS_getpid", 18},
     {"SYS_gettime", 17},
+    {"SYS_ioctl", 142},
+    {"SYS_link", 123},
+    {"SYS_linux_getrlimit", 156},
+    {"SYS_linux_kill", 146},
+    {"SYS_linux_lstat", 158},
+    {"SYS_linux_mmap", 143},
+    {"SYS_linux_setrlimit", 157},
+    {"SYS_linux_sigaction", 145},
+    {"SYS_linux_sigprocmask", 147},
+    {"SYS_linux_sigsuspend", 148},
+    {"SYS_linux_waitpid", 159},
     {"SYS_mbox_free", 53},
     {"SYS_mbox_info", 54},
     {"SYS_mbox_init", 50},
     {"SYS_mbox_send", 51},
+    {"SYS_mkdir", 122},
     {"SYS_mmap", 20},
     {"SYS_open", 100},
     {"SYS_pgdir", 31},
+    {"SYS_pipe", 140},
     {"SYS_putc", 30},
+    {"SYS_read", 102},
+    {"SYS_rename", 124},
+    {"SYS_seek", 104},
     {"SYS_sem_free", 43},
     {"SYS_sem_get_value", 44},
     {"SYS_sem_init", 40},
     {"SYS_sem_post", 41},
     {"SYS_shmem", 22},
+    {"SYS_unlink", 127},
     {"SYS_wait", 3},
+    {"SYS_write", 103},
     {"SYS_yield", 10},
 
 };

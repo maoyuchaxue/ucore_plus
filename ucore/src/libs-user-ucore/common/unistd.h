@@ -157,4 +157,11 @@
 #define EXEC_MAX_ARG_NUM    32
 #define EXEC_MAX_ARG_LEN    4095
 
+
+#define PROT_READ       0x1	/* page can be read */
+#define PROT_WRITE      0x2	/* page can be written */
+#define PROT_EXEC       0x4	/* page can be executed */
+#define PROT_SEM        0x8	/* page may be used for atomic ops */
+#define PROT_NONE       0x0	/* page can not be accessed */
+
 #endif /* !__LIBS_UNISTD_H__ */
