@@ -562,10 +562,10 @@ static void loop()
 				executed_calls = now_executed;
 				last_executed = now;
 			}
-			if ((now - start < 3 * 1000) && (now - start < 1000 || now - last_executed < 500))
+			if ((now - start < 4) && (now - start < 2 || now - last_executed < 1))
 				continue;
 #else
-			if (current_time_ms() - start < 3 * 1000)
+			if (current_time_ms() - start < 4)
 				continue;
 #endif
 			//过了一定时间就杀了工作进程
