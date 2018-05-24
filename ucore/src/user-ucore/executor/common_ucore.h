@@ -323,6 +323,8 @@ static int do_sandbox_none(void)
 // Moreover, a mount can be re-mounted as read-only and then we will fail to make a dir empty.
 static void remove_dir(const char* dir) // checked...?
 {
+	// we temporarily delete this function since there're several bug happened here.
+	//return ;
 	DIR* dp;
 	struct dirent* ep;
 	int iter = 0;
@@ -562,7 +564,7 @@ static void loop()
 				executed_calls = now_executed;
 				last_executed = now;
 			}
-			if ((now - start < 4) && (now - start < 2 || now - last_executed < 1))
+			if ((now - start < 100) && (now - start < 50 || now - last_executed < 25))
 				continue;
 #else
 			if (current_time_ms() - start < 4)

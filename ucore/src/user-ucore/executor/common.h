@@ -135,7 +135,7 @@ PRINTF static void debug(const char* msg, ...) // checked?
 	pid = getpid() ;
 	va_list args;
 	va_start(args, msg);
-	cprintf("<debug message from pid: %d>    ", pid);
+	cprintf("<%d>    ", pid);
 	vfprintf(stderr, msg, args);
 	va_end(args);
 	sem_post(debug_mutex) ;
