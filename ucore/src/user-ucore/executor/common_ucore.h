@@ -564,10 +564,10 @@ static void loop()
 				executed_calls = now_executed;
 				last_executed = now;
 			}
-			if ((now - start < 100) && (now - start < 50 || now - last_executed < 25))
+			if ((now - start < 100) && (now - start < 100 || now - last_executed < 30))
 				continue;
 #else
-			if (current_time_ms() - start < 4)
+			if (current_time_ms() - start < 100)
 				continue;
 #endif
 			//过了一定时间就杀了工作进程
