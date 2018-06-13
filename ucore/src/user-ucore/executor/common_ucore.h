@@ -564,7 +564,7 @@ static void loop()
 				executed_calls = now_executed;
 				last_executed = now;
 			}
-			if ((now - start < 100) && (now - start < 100 || now - last_executed < 30))
+			if ((now - start < 100) && (now - start < 100 || now - last_executed < 50))
 				continue;
 #else
 			if (current_time_ms() - start < 100)
@@ -575,7 +575,9 @@ static void loop()
 			debug("killing\n");
 			//kill(-pid);
 			kill(pid);
-			while (waitpid(-1, &status, 0) != pid) {
+			debug("killed. Now waiting...\n") ;
+			while (waitpid(pid, &status, 0) != pid) {
+				debug("after killed, waiting...\n") ;
 			}
 			break;
 		}
