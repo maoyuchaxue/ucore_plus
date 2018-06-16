@@ -1931,8 +1931,8 @@ static int user_main(void *arg)
 	KERNEL_EXECVE2(UNITTEST);
 #endif
 #else
-	//__KERNEL_EXECVE("/bin/syz-executor", "/bin/syz-executor");
-	__KERNEL_EXECVE("/bin/sh", "/bin/sh");
+	__KERNEL_EXECVE("/bin/syz-executor", "/bin/syz-executor");
+	// __KERNEL_EXECVE("/bin/sh", "/bin/sh");
 #endif
 	kprintf("user_main execve failed, no /bin/sh?.\n");
 }
