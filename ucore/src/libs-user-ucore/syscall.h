@@ -84,6 +84,7 @@ struct sigaction ;
 struct linux_rlimit ;
 struct linux_stat ;
 
+void* test_void() ;
 void *sys_linux_mmap(void *addr, size_t len, int prot, int flags, int fd, size_t pgoff) ;
 int sys_linux_tkill(int pid, int sign) ;
 int sys_linux_kill(int pid, int sign) ;

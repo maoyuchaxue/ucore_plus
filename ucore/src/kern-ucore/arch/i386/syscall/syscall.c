@@ -376,7 +376,13 @@ static uint32_t(*syscalls[]) (uint32_t arg[]) = {
 	    [SYS_list_module] sys_list_module,
 	    [SYS_mount] syscall_linux_mount,
 		[SYS_umount] syscall_linux_umount,
-	    [SYS_debug] sys_debug
+	    [SYS_debug] sys_debug,
+		[SYS_linux_mmap] syscall_linux_mmap,
+		[SYS_linux_sigaction] syscall_linux_sigaction,
+		[SYS_linux_sigprocmask] syscall_linux_sigprocmask,
+		[SYS_linux_getrlimit] syscall_linux_getrlimit,
+		[SYS_linux_setrlimit] syscall_linux_setrlimit,
+		[SYS_linux_lstat] syscall_linux_lstat
 };
 
 #define NUM_SYSCALLS        ((sizeof(syscalls)) / (sizeof(syscalls[0])))

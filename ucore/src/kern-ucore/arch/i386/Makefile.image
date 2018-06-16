@@ -19,7 +19,8 @@ $(KERNEL_IMG): $(BOOTSECT) $(KERNEL_ELF)
 
 $(KERNEL_ELF): $(LINK_FILE) $(KERNEL_BUILTIN) $(RAMDISK_OBJ)
 	@echo Linking uCore
-	$(Q)$(TARGET_LD) $(TARGET_LDFLAGS) -T $(LINK_FILE) $(KERNEL_BUILTIN) $(RAMDISK_OBJ) -o $@
+	$(Q)$(TARGET_CC) -D__ASSEMBLY__ $(TARGET_SIMPLE_CFLAGS) -c -o debug/kcov.o debug/kcov.c
+	$(Q)$(TARGET_LD) $(TARGET_LDFLAGS) -T $(LINK_FILE) $(KERNEL_BUILTIN) $(RAMDISK_OBJ) debug/kcov.o -o $@
 
 $(LINK_FILE): $(LINK_FILE_IN) $(KCONFIG_AUTOCONFIG)
 	@echo "creating linker script"

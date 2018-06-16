@@ -25,9 +25,15 @@ int sys_wait(int pid, int *store)
 {
 	return syscall(SYS_wait, pid, store);
 }
+
 int sys_linux_waitpid(int pid, int *store, int options)
 {
-	return syscall(SYS_linux_waitpid, pid, store, options);
+	cprintf("linux_waitpid!!!\n") ;
+#ifdef ARCH_AMD64
+	return syscall(SYS_linux_waitpid, pid, store, options);;
+#else
+	return syscall(SYS_wait, pid, store);;
+#endif
 }
 
 int sys_exec(const char *filename, const char **argv, const char **envp)
@@ -291,8 +297,11 @@ int sys_debug(uint32_t pid, uint32_t sig, uint32_t arg) {
 
 void* sys_linux_mmap(void *addr, size_t len, int prot, int flags, int fd, size_t pgoff) 
 {
-	return syscall(SYS_linux_mmap, addr, len, prot, flags, fd, pgoff);
+	void* ret = syscall(SYS_linux_mmap, addr, len, prot, flags, fd, pgoff);
+	cprintf("returning %lx\n", ret) ;
+	return ret ;
 }
+void* test_void() {return (void*)0x100000000ull ;}
 
 int sys_linux_tkill(int pid, int sign)
 {

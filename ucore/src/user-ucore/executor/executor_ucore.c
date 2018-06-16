@@ -84,6 +84,7 @@ int main(int argc, char** argv) // checked
 	debug("mmmaping\n");
 	output_data = (uint32*)sys_linux_mmap(kOutputDataAddr, kMaxOutput,
 				    PROT_READ | PROT_WRITE, MAP_SHARED | MAP_FIXED | MAP_ANON, -1, 0);
+	cprintf("mapping: outputdata=%llx\n", output_data) ;
 	if (output_data != kOutputDataAddr)
 		fail("mmap of output file failed");
 
